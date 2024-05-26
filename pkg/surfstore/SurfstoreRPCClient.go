@@ -2,6 +2,7 @@ package surfstore
 
 import (
 	context "context"
+	"fmt"
 	"time"
 
 	grpc "google.golang.org/grpc"
@@ -155,6 +156,7 @@ func (surfClient *RPCClient) GetBlockStoreMap(blockHashesIn []string, blockStore
 		return err
 	}
 	c := NewMetaStoreClient(conn)
+	fmt.Printf("list all hashin: %v", blockHashesIn)
 
 	// perform the call
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
