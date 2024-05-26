@@ -129,6 +129,7 @@ func (surfClient *RPCClient) UpdateFile(fileMetaData *FileMetaData, latestVersio
 
 func (surfClient *RPCClient) GetBlockHashes(blockStoreAddr string, blockHashes *[]string) error {
 	// connect to the server
+	fmt.Printf("Get block hashes for %v\n", blockStoreAddr)
 	conn, err := grpc.Dial(blockStoreAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return err
@@ -156,7 +157,7 @@ func (surfClient *RPCClient) GetBlockStoreMap(blockHashesIn []string, blockStore
 		return err
 	}
 	c := NewMetaStoreClient(conn)
-	fmt.Printf("list all hashin: %v", blockHashesIn)
+	fmt.Printf("list all hashin: %v\n", blockHashesIn)
 
 	// perform the call
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
