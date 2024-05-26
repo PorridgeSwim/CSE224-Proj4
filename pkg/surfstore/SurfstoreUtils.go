@@ -87,7 +87,7 @@ func ClientSync(client RPCClient) {
 	if err != nil {
 		log.Fatalf("Error fetching local file info: %v\n", err)
 	}
-	// fmt.Printf("%v\n", localMetaMap)
+	fmt.Printf("%v\n", localMetaMap)
 	//fmt.Printf("%v\n", localBlockMap)
 	fmt.Println("step2")
 	// step2: fetch local index.db map
