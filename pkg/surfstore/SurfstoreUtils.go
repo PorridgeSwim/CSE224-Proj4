@@ -2,6 +2,7 @@ package surfstore
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,13 +11,30 @@ import (
 // Implement the logic for a client syncing with the server here.
 func ClientSync(client RPCClient) {
 	baseDir := client.BaseDir
+
+	files, err := ioutil.ReadDir(baseDir)
+	if err != nil {
+		fmt.Println("Error reading directory:", err)
+		return
+	}
+
+	// Print directory and file information
+	for _, file := range files {
+		name := file.Name()
+		size := file.Size()
+		modTime := file.ModTime()
+		mode := file.Mode()
+
+		fmt.Printf("%s\t%v\t%d bytes\t%s\n", mode, modTime, size, name)
+	}
+
 	fmt.Println("step1")
 	// step1: fetch local file info
 	localMetaMap := make(map[string][]string)
 	localBlockMap := make(map[string][]*Block)
 	localHashBlockMap := make(map[string]map[string]*Block)
 	// fmt.Printf("%v\n", baseDir)
-	err := filepath.Walk(baseDir, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(baseDir, func(path string, info os.FileInfo, err error) error {
 		// fmt.Printf("walk once: %v\n", info.Name())
 		if err != nil {
 			return err
