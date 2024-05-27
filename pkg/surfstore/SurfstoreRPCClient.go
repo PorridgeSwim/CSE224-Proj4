@@ -2,7 +2,6 @@ package surfstore
 
 import (
 	context "context"
-	"fmt"
 	"time"
 
 	grpc "google.golang.org/grpc"
@@ -129,7 +128,7 @@ func (surfClient *RPCClient) UpdateFile(fileMetaData *FileMetaData, latestVersio
 
 func (surfClient *RPCClient) GetBlockHashes(blockStoreAddr string, blockHashes *[]string) error {
 	// connect to the server
-	fmt.Printf("Get block hashes for %v\n", blockStoreAddr)
+	// fmt.Printf("Get block hashes for %v\n", blockStoreAddr)
 	conn, err := grpc.Dial(blockStoreAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return err
