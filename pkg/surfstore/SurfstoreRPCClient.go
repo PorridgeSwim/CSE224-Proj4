@@ -171,6 +171,7 @@ func (surfClient *RPCClient) GetBlockStoreMap(blockHashesIn []string, blockStore
 	for addr, hashes := range v.GetBlockStoreMap() {
 		(*blockStoreMap)[addr] = hashes.GetHashes()
 	}
+	fmt.Printf("list the block store map: %v\n", blockStoreMap)
 	//fmt.Println("finish get block store map in rpc client")
 
 	// close the connection

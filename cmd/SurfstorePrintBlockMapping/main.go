@@ -32,6 +32,7 @@ const BLOCK_USAGE = "Size of the blocks used to fragment files"
 const EX_USAGE int = 64
 
 func main() {
+	fmt.Printf("using print block mapping\n")
 	// Custom flag Usage message
 	flag.Usage = func() {
 		w := flag.CommandLine.Output()
