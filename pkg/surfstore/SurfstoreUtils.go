@@ -11,6 +11,7 @@ import (
 // Implement the logic for a client syncing with the server here.
 func ClientSync(client RPCClient) {
 	baseDir := client.BaseDir
+	fmt.Printf("block size is:%v\n", client.BlockSize)
 
 	files, err := ioutil.ReadDir(baseDir)
 	if err != nil {
