@@ -11,6 +11,7 @@ import (
 // Implement the logic for a client syncing with the server here.
 func ClientSync(client RPCClient) {
 	baseDir := client.BaseDir
+	blockSize := client.BlockSize
 	fmt.Printf("block size is:%v\n", client.BlockSize)
 
 	files, err := ioutil.ReadDir(baseDir)
@@ -68,15 +69,15 @@ func ClientSync(client RPCClient) {
 		// }
 		bytesRead := 0
 		for {
-			if totalBytesRead-bytesRead > 4096 {
-				blockData := buf[bytesRead : bytesRead+4096]
+			if totalBytesRead-bytesRead > blockSize {
+				blockData := buf[bytesRead : bytesRead+blockSize]
 				hashList = append(hashList, GetBlockHashString(blockData))
 				block := &Block{
 					BlockData: blockData,
 					BlockSize: int32(len(blockData)),
 				}
 				blockList = append(blockList, block)
-				bytesRead += 4096
+				bytesRead += blockSize
 			} else {
 				blockData := buf[bytesRead:]
 				if len(blockData) == 0 {
