@@ -236,32 +236,35 @@ func Pull(client *RPCClient, fileMetaData *FileMetaData, baseDir string, blockSt
 		return err
 	}
 	defer file.Close()
+	reverseBlockStoreMap := make(map[string]string)
 	for addr, hashList := range blockStoreMap {
 		for _, hash := range hashList {
-			if hash == "0" {
-				// need to delete local file
-				err := os.Remove(baseDir + "/" + fileName)
-				if err != nil {
-					return err
-				}
-				return nil
-			}
-			if hash == "-1" {
-				return nil
-			}
-			err := client.GetBlock(hash, addr, &block)
-			if err != nil {
-				return err
-			}
-			//fmt.Printf("Block data: %v\n", block.GetBlockData())
-			err = WriteBlock(file, block.GetBlockData(), int(block.GetBlockSize()))
-			if err != nil {
-				return err
-			}
-
+			reverseBlockStoreMap[hash] = addr
 		}
 	}
 
+	for _, hash := range fileMetaData.GetBlockHashList() {
+		if hash == "0" {
+			// need to delete local file
+			err := os.Remove(baseDir + "/" + fileName)
+			if err != nil {
+				return err
+			}
+			return nil
+		}
+		if hash == "-1" {
+			return nil
+		}
+		err := client.GetBlock(hash, reverseBlockStoreMap[hash], &block)
+		if err != nil {
+			return err
+		}
+		//fmt.Printf("Block data: %v\n", block.GetBlockData())
+		err = WriteBlock(file, block.GetBlockData(), int(block.GetBlockSize()))
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
