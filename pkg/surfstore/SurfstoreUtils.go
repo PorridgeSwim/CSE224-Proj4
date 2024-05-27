@@ -2,7 +2,6 @@ package surfstore
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -14,21 +13,21 @@ func ClientSync(client RPCClient) {
 	blockSize := client.BlockSize
 	fmt.Printf("block size is:%v\n", client.BlockSize)
 
-	files, err := ioutil.ReadDir(baseDir)
-	if err != nil {
-		fmt.Println("Error reading directory:", err)
-		return
-	}
+	// files, err := ioutil.ReadDir(baseDir)
+	// if err != nil {
+	// 	fmt.Println("Error reading directory:", err)
+	// 	return
+	// }
 
-	// Print directory and file information
-	for _, file := range files {
-		name := file.Name()
-		size := file.Size()
-		modTime := file.ModTime()
-		mode := file.Mode()
+	// // Print directory and file information
+	// for _, file := range files {
+	// 	name := file.Name()
+	// 	size := file.Size()
+	// 	modTime := file.ModTime()
+	// 	mode := file.Mode()
 
-		fmt.Printf("%s\t%v\t%d bytes\t%s\n", mode, modTime, size, name)
-	}
+	// 	fmt.Printf("%s\t%v\t%d bytes\t%s\n", mode, modTime, size, name)
+	// }
 
 	fmt.Println("step1")
 	// step1: fetch local file info
@@ -36,7 +35,7 @@ func ClientSync(client RPCClient) {
 	localBlockMap := make(map[string][]*Block)
 	localHashBlockMap := make(map[string]map[string]*Block)
 	// fmt.Printf("%v\n", baseDir)
-	err = filepath.Walk(baseDir, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(baseDir, func(path string, info os.FileInfo, err error) error {
 		// fmt.Printf("walk once: %v\n", info.Name())
 		if err != nil {
 			return err
@@ -107,7 +106,7 @@ func ClientSync(client RPCClient) {
 	if err != nil {
 		log.Fatalf("Error fetching local file info: %v\n", err)
 	}
-	fmt.Printf("%v\n", localMetaMap)
+	// fmt.Printf("%v\n", localMetaMap)
 	//fmt.Printf("%v\n", localBlockMap)
 	fmt.Println("step2")
 	// step2: fetch local index.db map
@@ -124,7 +123,7 @@ func ClientSync(client RPCClient) {
 			localIndexMap[k] = v
 		}
 	}
-	PrintMetaMap(localIndexMap)
+	// PrintMetaMap(localIndexMap)
 	fmt.Println("step3")
 	// step3: fetch and push all local changes to cloud
 	blockStoreMap := make(map[string][]string)
@@ -187,7 +186,7 @@ func ClientSync(client RPCClient) {
 	if err != nil {
 		log.Fatalf("Error Fetching Remote index.db: %v\n", err)
 	}
-	PrintMetaMap(remoteIndexMap)
+	// PrintMetaMap(remoteIndexMap)
 
 	fmt.Println("step5")
 	// step5: pull remote changes to local

@@ -157,7 +157,7 @@ func (surfClient *RPCClient) GetBlockStoreMap(blockHashesIn []string, blockStore
 		return err
 	}
 	c := NewMetaStoreClient(conn)
-	fmt.Printf("list all hashin: %v\n", blockHashesIn)
+	// fmt.Printf("list all hashin: %v\n", blockHashesIn)
 
 	// perform the call
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -171,7 +171,7 @@ func (surfClient *RPCClient) GetBlockStoreMap(blockHashesIn []string, blockStore
 	for addr, hashes := range v.GetBlockStoreMap() {
 		(*blockStoreMap)[addr] = hashes.GetHashes()
 	}
-	fmt.Printf("list the block store map: %v\n", blockStoreMap)
+	// fmt.Printf("list the block store map: %v\n", blockStoreMap)
 	//fmt.Println("finish get block store map in rpc client")
 
 	// close the connection
